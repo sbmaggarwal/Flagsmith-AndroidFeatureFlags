@@ -30,7 +30,7 @@ import com.flagsmith.Flagsmith
 import com.flagsmith.travelflagging.ui.theme.TravelFlaggingTheme
 
 const val APP_NAME = "Flagsmith Travel"
-const val FLAGSMITH_DEVELOPMENT_KEY = "HizvZTYLTPvfWTzzURgGFN"
+const val FLAGSMITH_DEVELOPMENT_KEY = "<API-KEY>"
 const val FEATURE_FLIGHT_BOOKING_KEY = "flight_booking_enabled"
 
 lateinit var flagsmith : Flagsmith
