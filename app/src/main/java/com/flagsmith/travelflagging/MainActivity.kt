@@ -33,6 +33,8 @@ const val APP_NAME = "Flagsmith Travel"
 const val FLAGSMITH_DEVELOPMENT_KEY = "<API-KEY>"
 const val FEATURE_FLIGHT_BOOKING_KEY = "flight_booking_enabled"
 
+lateinit var featureCache: HashMap<String, Boolean>
+
 lateinit var flagsmith : Flagsmith
 
 class MainActivity : ComponentActivity() {
@@ -43,7 +45,8 @@ class MainActivity : ComponentActivity() {
 
             val context = LocalContext.current
 
-            initFlagsmith(context);
+            initFlagsmith(context)
+            featureCache = HashMap()
 
             TravelFlaggingTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
@@ -163,10 +166,15 @@ fun handleButton2Click(context: Context) {
 }
 
 fun handleButton3Click(context: Context) {
-
-    flagsmith.getValueForFeature(featureId = FEATURE_FLIGHT_BOOKING_KEY) { result ->
-        val isFlightBookingEnabled = result.getOrNull()
+    val isFlightBookingEnabled = featureCache[FEATURE_FLIGHT_BOOKING_KEY]
+    if (isFlightBookingEnabled != null) {
         showToast(context, "Flight booking enabled: $isFlightBookingEnabled")
+    } else {
+        flagsmith.getValueForFeature(featureId = FEATURE_FLIGHT_BOOKING_KEY) { result ->
+            val value = result.getOrDefault(false)
+            featureCache[FEATURE_FLIGHT_BOOKING_KEY] = value as Boolean
+            showToast(context, "Flight booking enabled: $value")
+        }
     }
 }
 
